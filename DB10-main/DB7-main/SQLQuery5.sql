@@ -99,7 +99,10 @@ select * from curso;
 insert into matricula
 values ('2023-01-2','2023-02-03','2023-09-20',8,1,1),
 	   ('2023-01-10','2023-02-08','2023-09-10',8,4,4),
-	   ('2023-01-12','2023-02-11','2023-09-12',8,2,2);
+	   ('2023-01-12','2023-02-11','2023-09-12',8,2,2),
+	   ('2023-01-2','2023-02-03','2023-09-20',2,2,2),
+	   ('2023-01-10','2023-02-08','2023-09-10',2,3,3),
+	   ('2023-01-12','2023-02-11','2023-09-12',2,1,5);
 
 select * from matricula;
 
@@ -162,6 +165,39 @@ references estudiante(id_est));
 
 
 insert into ingreso_matricula(valor_curso, cantidad_curso,estudiante)
-values (4200000,4,1);
+values (2000000,2,1),
+       (4200000,4,1);
 
 select * from ingreso_matricula;
+
+--joins----
+select ingreso_matricula.id_ing, estudiante.nombre_est,estudiante.apellido_est	
+from ingreso_matricula
+inner join estudiante on ingreso_matricula.id_ing = estudiante.id_est;
+
+select matricula.id_matricula,estudiante.nombre_est,estudiante.apellido_est,curso.nombre_curso,profesor.nombre_prof,profesor.apellido_prof
+from ((matricula
+inner join estudiante on matricula.estudiante = estudiante.id_est)
+inner join curso on matricula.curso = curso.id_curso
+inner join profesor on matricula.profesor = profesor.id_prof);
+
+select estudiante.id_est,estudiante.nombre_est,estudiante.apellido_est,matricula.fecha_matricula,ingreso_matricula.valor_curso
+from estudiante
+inner join matricula on estudiante.id_est = matricula.estudiante
+inner join ingreso_matricula on estudiante.id_est = ingreso_matricula.estudiante;
+
+--realizar un left join
+select nombre_est,apellido_est,email_est
+from estudiante
+left join ingreso_matricula
+on estudiante.id_est = ingreso_matricula.estudiante;
+--realizar un right join
+select nombre_est,apellido_est,email_est
+from estudiante
+right join ingreso_matricula
+on estudiante.id_est = ingreso_matricula.estudiante;
+--full join
+select estudiante.id_est, estudiante.nombre_est,matricula.fecha_matricula,curso.nombre_curso
+from matricula
+full outer join estudiante on matricula.estudiante = estudiante.id_est
+full outer join curso on matricula.curso = curso.id_curso;
