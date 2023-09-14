@@ -42,6 +42,8 @@ create table matricula (
 ); 
 
 
+
+
 update matricula
 set curso = 2
 where id_matricula = 20;
